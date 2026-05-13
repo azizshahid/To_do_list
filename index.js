@@ -17,15 +17,28 @@ function createDeleteButton() {
   return deleteBtn;
 }
 
+function createCompleteButton() {
+  const completeBtn = document.createElement("button");
+  completeBtn.innerText = "Completed";
+  completeBtn.addEventListener("click", handleComplete);
+  return completeBtn;
+}
+
 function createTodoItem(text) {
   const li = document.createElement("li");
   const textNode = document.createTextNode(text);
   const deleteBtn = createDeleteButton();
+  const completeBtn = createCompleteButton();
 
   li.appendChild(textNode);
   li.appendChild(deleteBtn);
+  li.appendChild(completeBtn);
 
   return li;
+}
+
+function handleComplete(e) {
+  e.target.parentElement.classList.toggle('completed');
 }
 
 function handleDelete(e) {

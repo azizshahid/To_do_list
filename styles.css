@@ -57,7 +57,7 @@ li button {
   border-radius: 5px;
   background-color: #0c620c;
   border: 1px solid #0c620c;
-  margin-left: 320px;
+  margin-left: 100px;
   padding: 10px;
   color: aliceblue;
   text-align: center;
@@ -66,4 +66,9 @@ li button {
 li button:hover {
   background-color: #0e760e;
   cursor: pointer;
+}
+
+.completed {
+  text-decoration: line-through;
+  opacity: 0.5;
 }
