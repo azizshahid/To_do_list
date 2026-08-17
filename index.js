@@ -38,18 +38,28 @@ function createTodoItem(text) {
 }
 
 function handleComplete(e) {
-  e.target.parentElement.classList.toggle('completed');
+  e.target.parentElement.classList.toggle("completed");
 }
 
 function handleDelete(e) {
   e.target.parentElement.remove();
 }
 
-function addTodo() {
-  const inputValue = getInputValue();
+function isValidInput(value) {
+  if (value === "") {
+    return false;
+  }
+  if (value.length > 100) {
+    return false;
+  }
+  return true;
+}
 
-  if (inputValue === "") {
-    alert("Please enter a valid value");
+function addTodo() {
+  const validValue = getInputValue();
+
+  if (!isValidInput(validValue)) {
+    alert("Please enter a valid todo item (1-100 characters).");
     return;
   }
 
