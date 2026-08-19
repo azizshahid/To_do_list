@@ -26,11 +26,14 @@ function createCompleteButton() {
 
 function createTodoItem(text) {
   const li = document.createElement("li");
+  const span = document.createElement("span");
   const textNode = document.createTextNode(text);
   const deleteBtn = createDeleteButton();
   const completeBtn = createCompleteButton();
 
   li.appendChild(textNode);
+  li.appendChild(span);
+  span.appendChild(textNode);
   li.appendChild(deleteBtn);
   li.appendChild(completeBtn);
 
