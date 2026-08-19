@@ -63,7 +63,7 @@ function addTodo() {
     return;
   }
 
-  const todoItem = createTodoItem(inputValue);
+  const todoItem = createTodoItem(validValue);
   todoList.appendChild(todoItem);
   clearInput();
 }
