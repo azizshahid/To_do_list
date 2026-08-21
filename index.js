@@ -40,6 +40,20 @@ function createTodoItem(text) {
   return li;
 }
 
+function updateTaskCounter() {
+
+  let count = document.querySelectorAll('li').length;
+  let completedCount = document.querySelectorAll('li.completed').length;
+  const completed = count - completedCount;
+
+  const counterElement = document.getElementById('task_counter');
+  counterElement.textContent = `${completed} tasks remaining`;
+}
+
+// logic for counter 
+// We take complete li list from here to count the remaining tasks 
+// 
+
 function handleComplete(e) {
   e.target.parentElement.classList.toggle("completed");
 
@@ -48,10 +62,12 @@ function handleComplete(e) {
   } else {
     e.target.innerText = 'Completed';
   }
+  updateTaskCounter()
 }
 
 function handleDelete(e) {
   e.target.parentElement.remove();
+  updateTaskCounter()
 }
 
 function isValidInput(value) {
@@ -75,6 +91,7 @@ function addTodo() {
   const todoItem = createTodoItem(validValue);
   todoList.appendChild(todoItem);
   clearInput();
+  updateTaskCounter()
 }
 
 addButton.addEventListener("click", addTodo);
