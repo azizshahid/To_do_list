@@ -42,6 +42,12 @@ function createTodoItem(text) {
 
 function handleComplete(e) {
   e.target.parentElement.classList.toggle("completed");
+
+  if(e.target.innerText === "Completed") {
+    e.target.innerText = 'Undo'; 
+  } else {
+    e.target.innerText = 'Completed';
+  }
 }
 
 function handleDelete(e) {
