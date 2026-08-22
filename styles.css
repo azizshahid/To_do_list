@@ -36,7 +36,7 @@ h1.title {
   background-color: #2d9c2d;
   color: #efefef;
   cursor: pointer;
-  animation: background-color 0.6s ease-in-out;
+  /* animation: background-color 0.6s ease-in-out; */
   border-radius: 5px;
 }
 .todo button:hover {
@@ -49,8 +49,11 @@ ul#todo_list {
 }
 
 ul#todo_list li {
-  padding: 10px 0px;
+  padding: 12px 16px;
   border-bottom: 1px solid #2e2e2e;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 li button {
@@ -58,10 +61,11 @@ li button {
   border-radius: 5px;
   background-color: #0c620c;
   border: 1px solid #0c620c;
-  margin-left: 100px;
+  /* margin-left: 100px; */
   padding: 10px;
   color: aliceblue;
   text-align: center;
+  margin-left: 8px;
 }
 
 li button:hover {
