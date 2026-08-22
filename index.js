@@ -1,6 +1,7 @@
 const addButton = document.querySelector("#button");
 const todoList = document.querySelector("#todo_list");
 const todoInput = document.querySelector(".input");
+let tasks = [];
 
 function getInputValue() {
   return todoInput.value.trim();
@@ -24,14 +25,14 @@ function createCompleteButton() {
   return completeBtn;
 }
 
-function createTodoItem(text) {
+function createTodoItem(text, index) {
   const li = document.createElement("li");
   const span = document.createElement("span");
   const textNode = document.createTextNode(text);
   const deleteBtn = createDeleteButton();
   const completeBtn = createCompleteButton();
 
-  li.appendChild(textNode);
+  li.dataset.index = index;
   li.appendChild(span);
   span.appendChild(textNode);
   li.appendChild(deleteBtn);
@@ -55,6 +56,8 @@ function updateTaskCounter() {
 // 
 
 function handleComplete(e) {
+  const index = e.target.parentElement.dataset.index;
+  tasks[index].completed = !tasks[index].completed;
   e.target.parentElement.classList.toggle("completed");
 
   if(e.target.innerText === "Completed") {
@@ -66,6 +69,8 @@ function handleComplete(e) {
 }
 
 function handleDelete(e) {
+  const index = e.target.parentElement.dataset.index;
+  tasks.splice(index, 1)
   e.target.parentElement.remove();
   updateTaskCounter()
 }
@@ -88,7 +93,10 @@ function addTodo() {
     return;
   }
 
-  const todoItem = createTodoItem(validValue);
+  tasks.push({text: validValue, completed: false});
+  let index = tasks.length -1;
+
+  const todoItem = createTodoItem(validValue, index);
   todoList.appendChild(todoItem);
   clearInput();
   updateTaskCounter()
