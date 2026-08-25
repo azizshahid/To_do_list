@@ -42,37 +42,31 @@ function createTodoItem(text, index) {
 }
 
 function updateTaskCounter() {
-
-  let count = document.querySelectorAll('li').length;
-  let completedCount = document.querySelectorAll('li.completed').length;
+  let count = document.querySelectorAll("li").length;
+  let completedCount = document.querySelectorAll("li.completed").length;
   const completed = count - completedCount;
 
-  const counterElement = document.getElementById('task_counter');
+  const counterElement = document.getElementById("task_counter");
   counterElement.textContent = `${completed} tasks remaining`;
 }
-
-// logic for counter 
-// We take complete li list from here to count the remaining tasks 
-// 
 
 function handleComplete(e) {
   const index = e.target.parentElement.dataset.index;
   tasks[index].completed = !tasks[index].completed;
-  e.target.parentElement.classList.toggle("completed");
-
-  if(e.target.innerText === "Completed") {
-    e.target.innerText = 'Undo'; 
+  renderTasks();
+  if (e.target.innerText === "Completed") {
+    e.target.innerText = "Undo";
   } else {
-    e.target.innerText = 'Completed';
+    e.target.innerText = "Completed";
   }
-  updateTaskCounter()
+  updateTaskCounter();
 }
 
 function handleDelete(e) {
   const index = e.target.parentElement.dataset.index;
-  tasks.splice(index, 1)
-  e.target.parentElement.remove();
-  updateTaskCounter()
+  tasks.splice(index, 1);
+  renderTasks();
+  updateTaskCounter();
 }
 
 function isValidInput(value) {
@@ -85,6 +79,17 @@ function isValidInput(value) {
   return true;
 }
 
+function renderTasks() {
+  todoList.innerHTML = "";
+  tasks.forEach((task, index) => {
+    let listItem = createTodoItem(task.text, index);
+    if (task.completed) {
+      listItem.classList.add("completed");
+    }
+    todoList.appendChild(listItem);
+  });
+}
+
 function addTodo() {
   const validValue = getInputValue();
 
@@ -93,13 +98,14 @@ function addTodo() {
     return;
   }
 
-  tasks.push({text: validValue, completed: false});
-  let index = tasks.length -1;
+  tasks.push({ text: validValue, completed: false });
+  let index = tasks.length - 1;
 
   const todoItem = createTodoItem(validValue, index);
   todoList.appendChild(todoItem);
+  renderTasks();
   clearInput();
-  updateTaskCounter()
+  updateTaskCounter();
 }
 
 addButton.addEventListener("click", addTodo);
