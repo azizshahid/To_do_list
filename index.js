@@ -25,13 +25,18 @@ function createCompleteButton() {
   return completeBtn;
 }
 
-function createTodoItem(text, index) {
+function createTodoItem(text, index, completed) {
   const li = document.createElement("li");
   const span = document.createElement("span");
   const textNode = document.createTextNode(text);
   const deleteBtn = createDeleteButton();
   const completeBtn = createCompleteButton();
 
+  if (completed === true) {
+    completeBtn.innerText = "Undo";
+  } else {
+    completeBtn.innerText = "Completed";
+  }
   li.dataset.index = index;
   li.appendChild(span);
   span.appendChild(textNode);
@@ -54,11 +59,11 @@ function handleComplete(e) {
   const index = e.target.parentElement.dataset.index;
   tasks[index].completed = !tasks[index].completed;
   renderTasks();
-  if (e.target.innerText === "Completed") {
-    e.target.innerText = "Undo";
-  } else {
-    e.target.innerText = "Completed";
-  }
+  // if (e.target.innerText === "Completed") {
+  //   e.target.innerText = "Undo";
+  // } else {
+  //   e.target.innerText = "Completed";
+  // }
   updateTaskCounter();
 }
 
@@ -82,7 +87,7 @@ function isValidInput(value) {
 function renderTasks() {
   todoList.innerHTML = "";
   tasks.forEach((task, index) => {
-    let listItem = createTodoItem(task.text, index);
+    let listItem = createTodoItem(task.text, index, task.completed);
     if (task.completed) {
       listItem.classList.add("completed");
     }
