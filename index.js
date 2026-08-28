@@ -59,6 +59,7 @@ function handleComplete(e) {
   const index = e.target.parentElement.dataset.index;
   tasks[index].completed = !tasks[index].completed;
   renderTasks();
+  saveTasks();
   // if (e.target.innerText === "Completed") {
   //   e.target.innerText = "Undo";
   // } else {
@@ -71,6 +72,7 @@ function handleDelete(e) {
   const index = e.target.parentElement.dataset.index;
   tasks.splice(index, 1);
   renderTasks();
+  saveTasks();
   updateTaskCounter();
 }
 
@@ -82,6 +84,21 @@ function isValidInput(value) {
     return false;
   }
   return true;
+}
+
+function saveTasks() {
+  let str = JSON.stringify(tasks);  
+  localStorage.setItem("tasks", str);
+}
+
+function loadTasks() {
+  let storage = localStorage.getItem('tasks');
+
+  if(storage) {
+    tasks = JSON.parse(storage)
+  }
+
+  renderTasks();
 }
 
 function renderTasks() {
@@ -109,8 +126,10 @@ function addTodo() {
   const todoItem = createTodoItem(validValue, index);
   todoList.appendChild(todoItem);
   renderTasks();
+  saveTasks();
   clearInput();
   updateTaskCounter();
 }
 
 addButton.addEventListener("click", addTodo);
+loadTasks();
