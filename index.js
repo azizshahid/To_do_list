@@ -2,6 +2,7 @@ const addButton = document.querySelector("#button");
 const todoList = document.querySelector("#todo_list");
 const todoInput = document.querySelector(".input");
 let tasks = [];
+let currentFilter = "All";
 
 function getInputValue() {
   return todoInput.value.trim();
@@ -86,16 +87,28 @@ function isValidInput(value) {
   return true;
 }
 
+function filterTasks() {
+   if (currentFilter === "active") {
+    let filtered = tasks.filter((task) => task.completed === false);
+    return filtered;
+  } else if (currentFilter === "completed") {
+    let filtered = tasks.filter((task) => task.completed === true);
+    return filtered;
+  } else {
+    return tasks;
+  }
+}
+
 function saveTasks() {
-  let str = JSON.stringify(tasks);  
+  let str = JSON.stringify(tasks);
   localStorage.setItem("tasks", str);
 }
 
 function loadTasks() {
-  let storage = localStorage.getItem('tasks');
+  let storage = localStorage.getItem("tasks");
 
-  if(storage) {
-    tasks = JSON.parse(storage)
+  if (storage) {
+    tasks = JSON.parse(storage);
   }
 
   renderTasks();
@@ -103,7 +116,12 @@ function loadTasks() {
 
 function renderTasks() {
   todoList.innerHTML = "";
-  tasks.forEach((task, index) => {
+
+  let filtered;
+  filtered = filterTasks();
+  
+  filtered.forEach((task, index) => {
+  
     let listItem = createTodoItem(task.text, index, task.completed);
     if (task.completed) {
       listItem.classList.add("completed");
