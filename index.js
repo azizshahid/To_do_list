@@ -3,6 +3,9 @@ const todoList = document.querySelector("#todo_list");
 const todoInput = document.querySelector(".input");
 let tasks = [];
 let currentFilter = "All";
+const allFltr = document.getElementById("filter_all");
+const activeFltr = document.getElementById("filter_active");
+const completeFltr = document.getElementById("filter_completed");
 
 function getInputValue() {
   return todoInput.value.trim();
@@ -87,6 +90,11 @@ function isValidInput(value) {
   return true;
 }
 
+function handleFilterClick(filterValue) {
+  currentFilter = filterValue;
+  renderTasks();
+}
+
 function filterTasks() {
    if (currentFilter === "active") {
     let filtered = tasks.filter((task) => task.completed === false);
@@ -150,4 +158,7 @@ function addTodo() {
 }
 
 addButton.addEventListener("click", addTodo);
+allFltr.addEventListener("click", () => handleFilterClick("all"));
+activeFltr.addEventListener("click", () => handleFilterClick("active"));
+completeFltr.addEventListener("click", () =>  handleFilterClick("completed"));
 loadTasks();

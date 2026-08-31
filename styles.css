@@ -58,7 +58,7 @@ ul#todo_list li {
 
 ul#todo_list li span {
   flex: 1;
-  min-width: 0;  
+  min-width: 0;
   word-wrap: break-word;
   margin-right: 12px;
 }
@@ -81,12 +81,35 @@ li button:hover {
   cursor: pointer;
 }
 
-li.completed span{
+.filters {
+  display: flex;
+  padding: 5px;
+  gap: 5px;
+  justify-content: space-between;
+}
+
+div button {
+  width: 80px;
+  border-radius: 5px;
+  background-color: #0c620c;
+  border: 1px solid #0c620c;
+  padding: 10px;
+  color: aliceblue;
+  text-align: center;
+  flex-shrink: 1;
+}
+
+div button:hover {
+  background-color: #0e760e;
+  cursor: pointer;
+}
+
+li.completed span {
   text-decoration: line-through;
   opacity: 0.5;
 }
 
 .counter {
   font-size: 1.2rem;
-  font-weight: bold;  
+  font-weight: bold;
 }
