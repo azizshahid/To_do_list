@@ -29,12 +29,20 @@ function createCompleteButton() {
   return completeBtn;
 }
 
+function createEditButton() {
+  const editBtn = document.createElement("button");
+  editBtn.innerText = "Edit";
+  editBtn.addEventListener('click', editTasks);
+  return editBtn;
+}
+
 function createTodoItem(text, index, completed) {
   const li = document.createElement("li");
   const span = document.createElement("span");
   const textNode = document.createTextNode(text);
   const deleteBtn = createDeleteButton();
   const completeBtn = createCompleteButton();
+  const editBtn = createEditButton();
 
   if (completed === true) {
     completeBtn.innerText = "Undo";
@@ -46,9 +54,31 @@ function createTodoItem(text, index, completed) {
   span.appendChild(textNode);
   li.appendChild(deleteBtn);
   li.appendChild(completeBtn);
+  li.appendChild(editBtn);
 
   return li;
 }
+
+function editTasks(e) {
+  let index = e.target.parentElement.dataset.index;
+
+  if (e.target.innerText === "Edit") {
+    const li = e.target.parentElement;
+    const span = li.querySelector("span");
+    const currentText = span.innerText;
+    const field = document.createElement("input");
+    field.value = currentText;
+    span.replaceWith(field);
+    e.target.innerText = "Save";
+  } else if (e.target.innerText === "Save") {
+    const li = e.target.parentElement;
+    const field = li.querySelector("input")
+    const currentText = field.value;
+    tasks[index].text = currentText; 
+    renderTasks();
+    saveTasks();
+  }
+} 
 
 function updateTaskCounter() {
   let count = document.querySelectorAll("li").length;
