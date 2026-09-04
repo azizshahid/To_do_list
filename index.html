@@ -1,39 +1,35 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>To-Do List App</title>
-        <!-- CSS Link -->
-        <link rel="stylesheet" href="./styles.css" />
-    </head>
-    <body>
-        <h1 class="title">To-Do List App</h1>
-        <div id="todo_app">
-            <div class="todo">
-                <input
-                    type="text"
-                    placeholder="Todo.."
-                    class="input"
-                    id="myInput"
-                />
-                <button id="button">Add</button>
-            </div>
-            <div class="filters">
-                <button id="filter_all" >All</button>
-                <button id="filter_active">Active</button>
-                <button id="filter_completed">Completed</button>
-            </div>
-            <ul id="todo_list">
-                <!-- <li></li> -->
-            </ul>
-        </div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>To-Do List App</title>
+    <!-- CSS Link -->
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <h1 class="title">To-Do List App</h1>
+    <div id="todo_app">
+      <div class="todo">
+        <input type="text" placeholder="Todo.." class="input" id="myInput" />
+        <button id="button">Add</button>
+      </div>
+      <div class="filters">
+        <button id="filter_all">All</button>
+        <button id="filter_active">Active</button>
+        <button id="filter_completed">Completed</button>
+      </div>
+      <ul id="todo_list">
+        <!-- <li></li> -->
+      </ul>
+    </div>
+    <div>
+      <button id="clr_cmplt">Clear Completed</button>
+    </div>
 
-        <p id="task_counter" class="counter">
-            0 Tasks Remaining
-        </p>
+    <p id="task_counter" class="counter">0 Tasks Remaining</p>
 
-        <!-- JavaScript Include -->
-        <script src="./index.js"></script>
-    </body>
+    <!-- JavaScript Include -->
+    <script src="./index.js"></script>
+  </body>
 </html>

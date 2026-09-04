@@ -6,6 +6,7 @@ let currentFilter = "All";
 const allFltr = document.getElementById("filter_all");
 const activeFltr = document.getElementById("filter_active");
 const completeFltr = document.getElementById("filter_completed");
+const cltBtn = document.getElementById("clr_cmplt");
 
 function getInputValue() {
   return todoInput.value.trim();
@@ -32,7 +33,7 @@ function createCompleteButton() {
 function createEditButton() {
   const editBtn = document.createElement("button");
   editBtn.innerText = "Edit";
-  editBtn.addEventListener('click', editTasks);
+  editBtn.addEventListener("click", editTasks);
   return editBtn;
 }
 
@@ -55,7 +56,6 @@ function createTodoItem(text, index, completed) {
   li.appendChild(deleteBtn);
   li.appendChild(completeBtn);
   li.appendChild(editBtn);
-
   return li;
 }
 
@@ -72,13 +72,13 @@ function editTasks(e) {
     e.target.innerText = "Save";
   } else if (e.target.innerText === "Save") {
     const li = e.target.parentElement;
-    const field = li.querySelector("input")
+    const field = li.querySelector("input");
     const currentText = field.value;
-    tasks[index].text = currentText; 
+    tasks[index].text = currentText;
     renderTasks();
     saveTasks();
   }
-} 
+}
 
 function updateTaskCounter() {
   let count = document.querySelectorAll("li").length;
@@ -120,13 +120,21 @@ function isValidInput(value) {
   return true;
 }
 
+function clearComplete() {
+  tasks = tasks.filter((task) => task.completed === false);
+  renderTasks();
+  saveTasks();
+}
+
+cltBtn.addEventListener("click", clearComplete);
+
 function handleFilterClick(filterValue) {
   currentFilter = filterValue;
   renderTasks();
 }
 
 function filterTasks() {
-   if (currentFilter === "active") {
+  if (currentFilter === "active") {
     let filtered = tasks.filter((task) => task.completed === false);
     return filtered;
   } else if (currentFilter === "completed") {
@@ -157,9 +165,8 @@ function renderTasks() {
 
   let filtered;
   filtered = filterTasks();
-  
+
   filtered.forEach((task, index) => {
-  
     let listItem = createTodoItem(task.text, index, task.completed);
     if (task.completed) {
       listItem.classList.add("completed");
@@ -190,5 +197,5 @@ function addTodo() {
 addButton.addEventListener("click", addTodo);
 allFltr.addEventListener("click", () => handleFilterClick("all"));
 activeFltr.addEventListener("click", () => handleFilterClick("active"));
-completeFltr.addEventListener("click", () =>  handleFilterClick("completed"));
+completeFltr.addEventListener("click", () => handleFilterClick("completed"));
 loadTasks();
