@@ -7,6 +7,7 @@ const allFltr = document.getElementById("filter_all");
 const activeFltr = document.getElementById("filter_active");
 const completeFltr = document.getElementById("filter_completed");
 const cltBtn = document.getElementById("clr_cmplt");
+const taskDate = document.getElementById("due_date_input");
 
 function getInputValue() {
   return todoInput.value.trim();
@@ -37,13 +38,16 @@ function createEditButton() {
   return editBtn;
 }
 
-function createTodoItem(text, index, completed) {
+function createTodoItem(text, index, completed, dueDate) {
   const li = document.createElement("li");
+  const dateSpan = document.createElement('span');
   const span = document.createElement("span");
   const textNode = document.createTextNode(text);
   const deleteBtn = createDeleteButton();
   const completeBtn = createCompleteButton();
   const editBtn = createEditButton();
+
+  dateSpan.innerText = dueDate
 
   if (completed === true) {
     completeBtn.innerText = "Undo";
@@ -53,6 +57,7 @@ function createTodoItem(text, index, completed) {
   li.dataset.index = index;
   li.appendChild(span);
   span.appendChild(textNode);
+  li.appendChild(dateSpan)
   li.appendChild(deleteBtn);
   li.appendChild(completeBtn);
   li.appendChild(editBtn);
@@ -133,6 +138,10 @@ function handleFilterClick(filterValue) {
   renderTasks();
 }
 
+function getDueDate() {
+  return taskDate.value;
+}
+
 function filterTasks() {
   if (currentFilter === "active") {
     let filtered = tasks.filter((task) => task.completed === false);
@@ -158,6 +167,7 @@ function loadTasks() {
   }
 
   renderTasks();
+  updateTaskCounter();
 }
 
 function renderTasks() {
@@ -167,7 +177,7 @@ function renderTasks() {
   filtered = filterTasks();
 
   filtered.forEach((task, index) => {
-    let listItem = createTodoItem(task.text, index, task.completed);
+    let listItem = createTodoItem(task.text, index, task.completed, task.dueDate);
     if (task.completed) {
       listItem.classList.add("completed");
     }
@@ -177,21 +187,19 @@ function renderTasks() {
 
 function addTodo() {
   const validValue = getInputValue();
+  const cmpltDate = getDueDate();
 
   if (!isValidInput(validValue)) {
     alert("Please enter a valid todo item (1-100 characters).");
     return;
   }
 
-  tasks.push({ text: validValue, completed: false });
-  let index = tasks.length - 1;
-
-  const todoItem = createTodoItem(validValue, index);
-  todoList.appendChild(todoItem);
+  tasks.push({ text: validValue, completed: false, dueDate: cmpltDate });
+  updateTaskCounter();
   renderTasks();
   saveTasks();
   clearInput();
-  updateTaskCounter();
+  
 }
 
 addButton.addEventListener("click", addTodo);
