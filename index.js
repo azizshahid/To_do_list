@@ -88,10 +88,12 @@ function editTasks(e) {
 function updateTaskCounter() {
   let count = document.querySelectorAll("li").length;
   let completedCount = document.querySelectorAll("li.completed").length;
-  const completed = count - completedCount;
+  const remaining = count - completedCount;
+
+  console.log(`li count ${count}, completed : ${completedCount}, remaining : ${remaining}`)
 
   const counterElement = document.getElementById("task_counter");
-  counterElement.textContent = `${completed} tasks remaining`;
+  counterElement.textContent = `${remaining} tasks remaining`;
 }
 
 function handleComplete(e) {
@@ -167,7 +169,7 @@ function loadTasks() {
   }
 
   renderTasks();
-  updateTaskCounter();
+  // updateTaskCounter();
 }
 
 function renderTasks() {
@@ -195,8 +197,8 @@ function addTodo() {
   }
 
   tasks.push({ text: validValue, completed: false, dueDate: cmpltDate });
-  updateTaskCounter();
   renderTasks();
+  updateTaskCounter();
   saveTasks();
   clearInput();
   
