@@ -38,7 +38,40 @@ function createEditButton() {
   return editBtn;
 }
 
-function createTodoItem(text, index, completed, dueDate) {
+function handlePioritychange(e) {
+  let index = e.target.parentElement.dataset.index;
+  let value = e.target.value;
+  tasks[index].priority = value;
+  renderTasks();
+  saveTasks();
+}
+
+function pritySelect(currentPriority) {
+  const select = document.createElement("select");
+  const lowOptn = document.createElement("option");
+  lowOptn.value = "low";
+  lowOptn.innerText = "Low";
+  const mediumOptn = document.createElement("option");
+  mediumOptn.value = "medium";
+  mediumOptn.innerText = "Medium";
+  const highOptn = document.createElement("option");
+  highOptn.value = "high";
+  highOptn.innerText = "High"; 
+  select.appendChild(lowOptn);
+  select.appendChild(mediumOptn);
+  select.appendChild(highOptn);
+  if (currentPriority === "medium") {
+    mediumOptn.selected = true;
+  } else if (currentPriority === "low") {
+    lowOptn.selected = true;
+  } else if (currentPriority === "high") {
+    highOptn.selected = true;
+  } 
+  select.addEventListener("change", handlePioritychange);
+  return select;  
+}
+
+function createTodoItem(text, index, completed, dueDate, priority) {
   const li = document.createElement("li");
   const dateSpan = document.createElement('span');
   const span = document.createElement("span");
@@ -46,6 +79,7 @@ function createTodoItem(text, index, completed, dueDate) {
   const deleteBtn = createDeleteButton();
   const completeBtn = createCompleteButton();
   const editBtn = createEditButton();
+  const protrityOption = pritySelect(priority);
 
   dateSpan.innerText = dueDate
 
@@ -58,6 +92,7 @@ function createTodoItem(text, index, completed, dueDate) {
   li.appendChild(span);
   span.appendChild(textNode);
   li.appendChild(dateSpan)
+  li.appendChild(protrityOption);
   li.appendChild(deleteBtn);
   li.appendChild(completeBtn);
   li.appendChild(editBtn);
@@ -89,8 +124,6 @@ function updateTaskCounter() {
   let count = document.querySelectorAll("li").length;
   let completedCount = document.querySelectorAll("li.completed").length;
   const remaining = count - completedCount;
-
-  console.log(`li count ${count}, completed : ${completedCount}, remaining : ${remaining}`)
 
   const counterElement = document.getElementById("task_counter");
   counterElement.textContent = `${remaining} tasks remaining`;
@@ -179,7 +212,7 @@ function renderTasks() {
   filtered = filterTasks();
 
   filtered.forEach((task, index) => {
-    let listItem = createTodoItem(task.text, index, task.completed, task.dueDate);
+    let listItem = createTodoItem(task.text, index, task.completed, task.dueDate, task.priority);
     if (task.completed) {
       listItem.classList.add("completed");
     }
@@ -196,7 +229,7 @@ function addTodo() {
     return;
   }
 
-  tasks.push({ text: validValue, completed: false, dueDate: cmpltDate });
+  tasks.push({ text: validValue, completed: false, dueDate: cmpltDate, priority: "medium" });
   renderTasks();
   updateTaskCounter();
   saveTasks();
