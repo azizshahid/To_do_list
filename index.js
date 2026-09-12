@@ -8,6 +8,7 @@ const activeFltr = document.getElementById("filter_active");
 const completeFltr = document.getElementById("filter_completed");
 const cltBtn = document.getElementById("clr_cmplt");
 const taskDate = document.getElementById("due_date_input");
+const priorityRank = { low: 1, medium: 2, high: 3 };
 
 function getInputValue() {
   return todoInput.value.trim();
@@ -56,7 +57,7 @@ function pritySelect(currentPriority) {
   mediumOptn.innerText = "Medium";
   const highOptn = document.createElement("option");
   highOptn.value = "high";
-  highOptn.innerText = "High"; 
+  highOptn.innerText = "High";
   select.appendChild(lowOptn);
   select.appendChild(mediumOptn);
   select.appendChild(highOptn);
@@ -66,14 +67,14 @@ function pritySelect(currentPriority) {
     lowOptn.selected = true;
   } else if (currentPriority === "high") {
     highOptn.selected = true;
-  } 
+  }
   select.addEventListener("change", handlePioritychange);
-  return select;  
+  return select;
 }
 
 function createTodoItem(text, index, completed, dueDate, priority) {
   const li = document.createElement("li");
-  const dateSpan = document.createElement('span');
+  const dateSpan = document.createElement("span");
   const span = document.createElement("span");
   const textNode = document.createTextNode(text);
   const deleteBtn = createDeleteButton();
@@ -81,7 +82,7 @@ function createTodoItem(text, index, completed, dueDate, priority) {
   const editBtn = createEditButton();
   const protrityOption = pritySelect(priority);
 
-  dateSpan.innerText = dueDate
+  dateSpan.innerText = dueDate;
 
   if (completed === true) {
     completeBtn.innerText = "Undo";
@@ -91,7 +92,7 @@ function createTodoItem(text, index, completed, dueDate, priority) {
   li.dataset.index = index;
   li.appendChild(span);
   span.appendChild(textNode);
-  li.appendChild(dateSpan)
+  li.appendChild(dateSpan);
   li.appendChild(protrityOption);
   li.appendChild(deleteBtn);
   li.appendChild(completeBtn);
@@ -210,9 +211,15 @@ function renderTasks() {
 
   let filtered;
   filtered = filterTasks();
-
+  filtered.sort((a, b) => priorityRank[b.priority] - priorityRank[a.priority]);
   filtered.forEach((task, index) => {
-    let listItem = createTodoItem(task.text, index, task.completed, task.dueDate, task.priority);
+    let listItem = createTodoItem(
+      task.text,
+      index,
+      task.completed,
+      task.dueDate,
+      task.priority,
+    );
     if (task.completed) {
       listItem.classList.add("completed");
     }
@@ -229,12 +236,16 @@ function addTodo() {
     return;
   }
 
-  tasks.push({ text: validValue, completed: false, dueDate: cmpltDate, priority: "medium" });
+  tasks.push({
+    text: validValue,
+    completed: false,
+    dueDate: cmpltDate,
+    priority: "medium",
+  });
   renderTasks();
   updateTaskCounter();
   saveTasks();
   clearInput();
-  
 }
 
 addButton.addEventListener("click", addTodo);
