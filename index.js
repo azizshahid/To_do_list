@@ -9,6 +9,8 @@ const completeFltr = document.getElementById("filter_completed");
 const cltBtn = document.getElementById("clr_cmplt");
 const taskDate = document.getElementById("due_date_input");
 const priorityRank = { low: 1, medium: 2, high: 3 };
+let manualOrderActive = false;
+let dragObj = null;
 
 function getInputValue() {
   return todoInput.value.trim();
@@ -43,6 +45,7 @@ function handlePioritychange(e) {
   let index = e.target.parentElement.dataset.index;
   let value = e.target.value;
   tasks[index].priority = value;
+  manualOrderActive = false;
   renderTasks();
   saveTasks();
 }
@@ -72,6 +75,11 @@ function pritySelect(currentPriority) {
   return select;
 }
 
+function hndlDrgStrt(e) {
+  dragObj = e.target.dataset.index;
+  console.log(dragObj);
+}
+
 function createTodoItem(text, index, completed, dueDate, priority) {
   const li = document.createElement("li");
   const dateSpan = document.createElement("span");
@@ -97,6 +105,8 @@ function createTodoItem(text, index, completed, dueDate, priority) {
   li.appendChild(deleteBtn);
   li.appendChild(completeBtn);
   li.appendChild(editBtn);
+  li.draggable = true;
+  li.addEventListener("dragstart", hndlDrgStrt);
   return li;
 }
 
@@ -211,7 +221,11 @@ function renderTasks() {
 
   let filtered;
   filtered = filterTasks();
-  filtered.sort((a, b) => priorityRank[b.priority] - priorityRank[a.priority]);
+  if (!manualOrderActive) {
+    filtered.sort(
+      (a, b) => priorityRank[b.priority] - priorityRank[a.priority],
+    );
+  }
   filtered.forEach((task, index) => {
     let listItem = createTodoItem(
       task.text,
