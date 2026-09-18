@@ -77,7 +77,23 @@ function pritySelect(currentPriority) {
 
 function hndlDrgStrt(e) {
   dragObj = e.target.dataset.index;
-  console.log(dragObj);
+}
+
+function hndlDrgOvr(e) {
+  e.preventDefault();
+}
+
+function hndlDrop(e) {
+  e.preventDefault();
+  const dropIndex = e.target.closest("li").dataset.index;
+  const [movedTasks] = tasks.splice(dragObj, 1);
+  tasks.splice(dropIndex, 0, movedTasks);
+
+  manualOrderActive = true;
+  dragObj = null;
+
+  renderTasks();
+  saveTasks();
 }
 
 function createTodoItem(text, index, completed, dueDate, priority) {
@@ -107,6 +123,8 @@ function createTodoItem(text, index, completed, dueDate, priority) {
   li.appendChild(editBtn);
   li.draggable = true;
   li.addEventListener("dragstart", hndlDrgStrt);
+  li.addEventListener("dragover", hndlDrgOvr);
+  li.addEventListener("drop", hndlDrop);
   return li;
 }
 
