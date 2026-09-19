@@ -96,7 +96,17 @@ function hndlDrop(e) {
   saveTasks();
 }
 
-function createTodoItem(text, index, completed, dueDate, priority) {
+function hndlTagRmv(e) {
+  const taskIndex = e.target.closest("li").dataset.index;
+  const tagIndex = e.target.dataset.tagIndex;
+
+  tasks[taskIndex].tags.splice(tagIndex, 1);
+
+  renderTasks();
+  saveTasks();
+}
+
+function createTodoItem(text, index, completed, dueDate, priority, tags) {
   const li = document.createElement("li");
   const dateSpan = document.createElement("span");
   const span = document.createElement("span");
@@ -105,14 +115,41 @@ function createTodoItem(text, index, completed, dueDate, priority) {
   const completeBtn = createCompleteButton();
   const editBtn = createEditButton();
   const protrityOption = pritySelect(priority);
+  const tagInput = document.createElement("input");
+  const tagContainer = document.createElement("div");
+  tags = tags || [];
 
   dateSpan.innerText = dueDate;
+  tagInput.placeholder = "Add tgas...";
+
+  tags.forEach((tag, tagIndex) => {
+    const chip = document.createElement("span");
+    chip.innerText = tag;
+    const removeBtn = document.createElement("button");
+    removeBtn.innerText = "x";
+    removeBtn.dataset.tagIndex = tagIndex;
+    removeBtn.addEventListener("click", hndlTagRmv);
+    chip.appendChild(removeBtn);
+    tagContainer.appendChild(chip);
+  });
 
   if (completed === true) {
     completeBtn.innerText = "Undo";
   } else {
     completeBtn.innerText = "Completed";
   }
+
+  tagInput.addEventListener("keydown", function (e) {
+    if (e.key === "Enter") {
+      const taskIndex = e.target.parentElement.dataset.index;
+      let tgVlu = tagInput.value;
+      tasks[taskIndex].tags.push(tgVlu);
+      tagInput.value = "";
+      renderTasks();
+      saveTasks();
+    }
+  });
+
   li.dataset.index = index;
   li.appendChild(span);
   span.appendChild(textNode);
@@ -122,6 +159,8 @@ function createTodoItem(text, index, completed, dueDate, priority) {
   li.appendChild(completeBtn);
   li.appendChild(editBtn);
   li.draggable = true;
+  li.appendChild(tagInput);
+  li.appendChild(tagContainer);
   li.addEventListener("dragstart", hndlDrgStrt);
   li.addEventListener("dragover", hndlDrgOvr);
   li.addEventListener("drop", hndlDrop);
@@ -251,6 +290,7 @@ function renderTasks() {
       task.completed,
       task.dueDate,
       task.priority,
+      task.tags,
     );
     if (task.completed) {
       listItem.classList.add("completed");
@@ -273,6 +313,7 @@ function addTodo() {
     completed: false,
     dueDate: cmpltDate,
     priority: "medium",
+    tags: [],
   });
   renderTasks();
   updateTaskCounter();
