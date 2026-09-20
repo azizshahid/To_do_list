@@ -11,6 +11,8 @@ const taskDate = document.getElementById("due_date_input");
 const priorityRank = { low: 1, medium: 2, high: 3 };
 let manualOrderActive = false;
 let dragObj = null;
+const searchInput = document.getElementById("search_input");
+let searchTerm = "";
 
 function getInputValue() {
   return todoInput.value.trim();
@@ -39,6 +41,15 @@ function createEditButton() {
   editBtn.innerText = "Edit";
   editBtn.addEventListener("click", editTasks);
   return editBtn;
+}
+
+searchInput.addEventListener("input", function(e) {
+  searchTerm = e.target.value;
+  renderTasks();
+});
+
+function searchTasks(taskList) {
+  return taskList.filter(task => task.text.includes(searchTerm));
 }
 
 function handlePioritychange(e) {
@@ -278,6 +289,7 @@ function renderTasks() {
 
   let filtered;
   filtered = filterTasks();
+  filtered = searchTasks(filtered);
   if (!manualOrderActive) {
     filtered.sort(
       (a, b) => priorityRank[b.priority] - priorityRank[a.priority],
